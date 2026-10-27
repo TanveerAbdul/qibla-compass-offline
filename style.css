@@ -64,12 +64,12 @@ h1 span { color: var(--gold); }
 .intercardinal { font-size: 9px; color: #78838d; }
 .ne { top: 23%; left: 77%; } .se { top: 77%; left: 77%; } .sw { top: 77%; left: 23%; } .nw { top: 23%; left: 23%; }
 .center-cap { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 22px; height: 22px; border: 2px solid #596978; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #596978; z-index: 3; font-size: 11px; }
-.qibla-marker-fixed { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.qibla-marker-fixed { position: absolute; inset: 0; z-index: 4; pointer-events: none; transform: rotate(0deg); }
 .qibla-marker-fixed::before { content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 13px solid #293540; }
+.qibla-kaaba { position: absolute; top: -19%; left: 50%; transform: translateX(-50%) rotate(-290deg); font-size: 42px; filter: drop-shadow(0 2px 2px #40322830); }
 .qibla-pointer { position: absolute; inset: 0; z-index: 2; transform: rotate(0deg); transition: transform .08s linear; pointer-events: none; }
 .pointer-shaft { position: absolute; left: 50%; top: 50%; width: 22px; height: 31%; transform: translateX(-50%); clip-path: polygon(50% 100%, 0 0, 100% 0); background: #244bb1; }
 .pointer-head { position: absolute; left: 50%; top: 19%; transform: translateX(-50%); width: 25px; height: 34%; clip-path: polygon(50% 0, 100% 100%, 50% 84%, 0 100%); background: #138145; filter: drop-shadow(0 1px 2px #17263838); }
-.kaaba { position: absolute; left: 50%; top: -19%; transform: translateX(-50%); font-size: 42px; filter: drop-shadow(0 2px 2px #40322830); }
 .compass.aligned .qibla-pointer { filter: drop-shadow(0 0 8px #45d483); }
 .compass.aligned .pointer-head, .compass.aligned .pointer-shaft { background: var(--green); }
 .compass.aligned { border-color: #45d483aa; box-shadow: 0 0 0 7px #45d4830d, 0 0 35px #45d4832a, 0 10px 28px #68554a20; }

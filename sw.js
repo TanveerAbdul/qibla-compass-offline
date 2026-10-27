@@ -1,6 +1,6 @@
 /* Cache-first service worker for a fully offline app shell. */
 "use strict";
-const CACHE_NAME = "qibla-compass-offline-v2";
+const CACHE_NAME = "qibla-compass-offline-v3";
 const APP_SHELL = [
   "./",
   "./index.html",

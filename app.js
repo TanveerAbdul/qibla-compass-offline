@@ -2,8 +2,7 @@
 (() => {
   "use strict";
 
-  const KAABA_LAT = 21.4225;
-  const KAABA_LON = 39.8262;
+  const QIBLA_BEARING = 290;
   const LOCATION_KEY = "qiblaCompass.location.v1";
   const $ = (id) => document.getElementById(id);
 
@@ -21,7 +20,6 @@
   };
 
   let locationData = null;
-  let QIBLA_BEARING = null;
   let smoothedHeading = null;
   let rawHeading = null;
   let orientationStarted = false;
@@ -40,23 +38,6 @@
     els.ticks.appendChild(tick);
   }
 
-  function calculateQibla(lat, lon) {
-    const kaabaLat = KAABA_LAT * Math.PI / 180;
-    const kaabaLon = KAABA_LON * Math.PI / 180;
-    const userLat = lat * Math.PI / 180;
-    const userLon = lon * Math.PI / 180;
-    const deltaLon = kaabaLon - userLon;
-    const y = Math.sin(deltaLon);
-    const x = Math.cos(userLat) * Math.tan(kaabaLat) - Math.sin(userLat) * Math.cos(deltaLon);
-    let angle = Math.atan2(y, x) * 180 / Math.PI;
-    return (angle + 360) % 360;
-  }
-
-  function cardinalDirection(degrees) {
-    const dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-    return dirs[Math.round(degrees / 45) % 8];
-  }
-
   function angularDifference(a, b) {
     return Math.abs(((a - b + 540) % 360) - 180);
   }
@@ -72,14 +53,10 @@
 
   function renderLocation(data, cached = false) {
     locationData = data;
-    QIBLA_BEARING = calculateQibla(data.latitude, data.longitude);
     els.locationText.textContent = `${data.latitude.toFixed(5)}°, ${data.longitude.toFixed(5)}°`;
     const accuracy = Number.isFinite(data.accuracy) ? `Accuracy ±${Math.round(data.accuracy)} m` : "Saved location";
     els.accuracyText.textContent = cached ? `${accuracy} · saved for offline use` : accuracy;
     els.locationStatus.classList.add("active");
-    els.qiblaBearing.textContent = `${Math.round(QIBLA_BEARING)}°`;
-    els.qiblaCardinal.textContent = cardinalDirection(QIBLA_BEARING);
-    els.qiblaMarkerFixed.style.transform = `rotate(${QIBLA_BEARING}deg)`;
     els.sensorStatus.textContent = "Location ready · waiting for compass heading";
     updateReadout();
   }
@@ -187,18 +164,13 @@
     if (smoothedHeading === null) {
       els.headingValue.textContent = "—°";
       els.differenceValue.textContent = "—°";
-      if (QIBLA_BEARING !== null) els.alignmentMessage.textContent = "Move your phone to activate the compass";
+      els.alignmentMessage.textContent = "Move your phone to activate the compass";
       return;
     }
     els.headingValue.textContent = `${Math.round(smoothedHeading)}°`;
     // The dial turns opposite to the phone's heading, keeping north aligned to true north.
     els.dial.style.transform = `rotate(${-smoothedHeading}deg)`;
     els.ticks.style.transform = `rotate(${-smoothedHeading}deg)`;
-
-    if (QIBLA_BEARING === null) {
-      els.alignmentMessage.textContent = "Waiting for location to calculate Qibla";
-      return;
-    }
 
     const difference = angularDifference(smoothedHeading, QIBLA_BEARING);
     els.differenceValue.textContent = `${Math.round(difference)}°`;
@@ -295,6 +267,9 @@
   }
 
   // First render from local storage so the app can work offline immediately.
+  els.qiblaBearing.textContent = `${QIBLA_BEARING}°`;
+  els.qiblaCardinal.textContent = "NW";
+  els.qiblaMarkerFixed.style.transform = `rotate(${QIBLA_BEARING}deg)`;
   const hasCachedLocation = loadCachedLocation();
   if (!hasCachedLocation) {
     els.locationText.textContent = "Finding your location…";
