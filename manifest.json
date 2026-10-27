@@ -1,0 +1,16 @@
+{
+  "id": "./",
+  "name": "Qibla Compass Offline",
+  "short_name": "Qibla Compass",
+  "description": "An offline Qibla compass with on-device direction calculations.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1929",
+  "theme_color": "#0a1929",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

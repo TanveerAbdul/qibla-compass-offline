@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1929">
+  <meta name="description" content="A private, offline Qibla compass. Direction is calculated on your device.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Qibla Compass">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Qibla Compass Offline</title>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">☾</div>
+      <div>
+        <p class="eyebrow">YOUR PERSONAL DIRECTION FINDER</p>
+        <h1>Qibla <span>Compass</span></h1>
+      </div>
+      <button id="installBtn" class="install-btn" hidden aria-label="Install app">＋ Install</button>
+    </header>
+
+    <section class="location-card" aria-label="Current location">
+      <div class="location-icon" aria-hidden="true">⌖</div>
+      <div class="location-copy">
+        <p class="eyebrow">YOUR LOCATION</p>
+        <p id="locationText" class="location-main">Finding your location…</p>
+        <p id="accuracyText" class="location-sub">Waiting for GPS permission</p>
+      </div>
+      <span id="locationStatus" class="status-dot" title="Location status"></span>
+    </section>
+
+    <section id="permissionPanel" class="notice-panel" hidden aria-live="polite">
+      <div class="notice-symbol">!</div>
+      <div class="notice-content">
+        <h2 id="noticeTitle">Permission needed</h2>
+        <p id="noticeText">Allow location and compass access to find Qibla.</p>
+        <p id="iosHelp" class="help-text" hidden>On iPhone/iPad: open <strong>Settings &gt; Safari &gt; Motion &amp; Orientation Access</strong>, turn it on, then return here. Also allow location access for this website.</p>
+        <button id="enableBtn" class="gold-btn">Enable Compass</button>
+      </div>
+    </section>
+
+    <section class="compass-section" aria-label="Qibla compass">
+      <div class="compass-wrap">
+        <div class="compass-halo"></div>
+        <div id="compass" class="compass" role="img" aria-label="Compass dial">
+          <div class="dial-ring ring-one"></div>
+          <div class="dial-ring ring-two"></div>
+          <div class="ticks" id="ticks" aria-hidden="true"></div>
+          <div id="dial" class="dial">
+            <span class="direction north">N</span>
+            <span class="direction east">E</span>
+            <span class="direction south">S</span>
+            <span class="direction west">W</span>
+            <span class="intercardinal ne">NE</span>
+            <span class="intercardinal se">SE</span>
+            <span class="intercardinal sw">SW</span>
+            <span class="intercardinal nw">NW</span>
+          </div>
+          <div class="center-cap"><span>✦</span></div>
+          <div id="qiblaPointer" class="qibla-pointer" aria-hidden="true">
+            <div class="pointer-shaft"></div>
+            <div class="pointer-head"></div>
+            <div class="kaaba">🕋</div>
+          </div>
+          <div class="north-marker" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="direction-readout">
+        <p class="eyebrow">QIBLA DIRECTION</p>
+        <div class="bearing-line"><strong id="qiblaBearing">—°</strong><span id="qiblaCardinal">Calculating…</span></div>
+        <p id="alignmentMessage" class="alignment-message">Finding your direction to the Kaaba</p>
+      </div>
+
+      <div class="readings">
+        <div class="reading">
+          <span class="reading-icon">◉</span>
+          <div><p class="reading-label">YOUR HEADING</p><strong id="headingValue">—°</strong></div>
+        </div>
+        <div class="reading">
+          <span class="reading-icon gold">✧</span>
+          <div><p class="reading-label">DISTANCE TO QIBLA</p><strong id="differenceValue">—°</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="actions">
+      <button id="calibrateBtn" class="secondary-btn"><span>↻</span> Calibrate Compass</button>
+      <button id="redetectBtn" class="gold-btn"><span>⌖</span> Re-detect Location</button>
+    </section>
+
+    <footer>
+      <p><span class="privacy-dot"></span> Private by design · Calculations happen on your device</p>
+      <p class="compatibility-note">Compass sensors require a supported mobile device and HTTPS. Location permission may need to be granted while online once. Install for the best offline experience.</p>
+      <p id="sensorStatus" class="sensor-status">Waiting for compass sensor…</p>
+    </footer>
+  </main>
+
+  <dialog id="calibrationModal" class="modal">
+    <div class="modal-icon">↻</div>
+    <h2>Calibrate your compass</h2>
+    <p>Move your phone slowly in a figure-eight pattern a few times. Keep it away from magnets, metal objects, and electronic equipment.</p>
+    <div class="figure-eight" aria-hidden="true">∞</div>
+    <button id="closeModalBtn" class="gold-btn">Got it</button>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
