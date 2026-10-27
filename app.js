@@ -174,8 +174,7 @@
 
     const difference = angularDifference(smoothedHeading, QIBLA_BEARING);
     els.differenceValue.textContent = `${Math.round(difference)}°`;
-    const relativeAngle = (QIBLA_BEARING - smoothedHeading + 360) % 360;
-    els.guidanceArrow.style.transform = `rotate(${relativeAngle}deg)`;
+    els.guidanceArrow.style.transform = `rotate(${-smoothedHeading}deg)`;
     const aligned = difference < 5;
     els.compass.classList.toggle("aligned", aligned);
     if (aligned) {
@@ -183,7 +182,7 @@
       els.alignmentMessage.classList.add("success");
       if (!alignedLast && "vibrate" in navigator) navigator.vibrate(200);
     } else {
-      els.alignmentMessage.textContent = "Turn your phone until the arrow points to the top";
+      els.alignmentMessage.textContent = "Turn your phone toward the fixed 290° NW Qibla marker";
       els.alignmentMessage.classList.remove("success");
     }
     alignedLast = aligned;
