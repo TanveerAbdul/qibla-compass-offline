@@ -25,6 +25,8 @@
   let smoothedHeading = null;
   let rawHeading = null;
   let orientationStarted = false;
+  const requiresOrientationPermission = typeof DeviceOrientationEvent !== "undefined" &&
+    typeof DeviceOrientationEvent.requestPermission === "function";
   let alignedLast = false;
   let deferredInstallPrompt = null;
   let animationFrame = null;
@@ -110,7 +112,7 @@
       };
       try { localStorage.setItem(LOCATION_KEY, JSON.stringify(data)); } catch (error) { console.warn("Location could not be saved.", error); }
       renderLocation(data, false);
-      hideNotice();
+      if (!requiresOrientationPermission || orientationStarted) hideNotice();
     }, (error) => {
       console.warn("Geolocation error:", error);
       if (locationData) {
