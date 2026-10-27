@@ -11,7 +11,8 @@
     locationStatus: $("locationStatus"), permissionPanel: $("permissionPanel"),
     noticeTitle: $("noticeTitle"), noticeText: $("noticeText"), iosHelp: $("iosHelp"),
     enableBtn: $("enableBtn"), compass: $("compass"), dial: $("compass-dial"),
-    ticks: $("ticks"), qiblaMarkerFixed: $("qiblaMarkerFixed"), guidanceArrow: $("guidance-arrow"), qiblaBearing: $("qiblaBearing"),
+    ticks: $("ticks"), qiblaMarkerFixed: $("qiblaMarkerFixed"), qiblaKaaba: $("qibla-kaaba"),
+    guidanceArrow: $("guidance-arrow"), qiblaBearing: $("qiblaBearing"),
     qiblaCardinal: $("qiblaCardinal"), alignmentMessage: $("alignmentMessage"),
     headingValue: $("headingValue"), differenceValue: $("differenceValue"),
     sensorStatus: $("sensorStatus"), redetectBtn: $("redetectBtn"),
@@ -171,6 +172,9 @@
     // The dial turns opposite to the phone's heading, keeping north aligned to true north.
     els.dial.style.transform = `rotate(${-smoothedHeading}deg)`;
     els.ticks.style.transform = `rotate(${-smoothedHeading}deg)`;
+    const qiblaRelativeAngle = (QIBLA_BEARING - smoothedHeading + 360) % 360;
+    els.qiblaMarkerFixed.style.transform = `rotate(${qiblaRelativeAngle}deg)`;
+    els.qiblaKaaba.style.transform = `translateX(-50%) rotate(${-qiblaRelativeAngle}deg)`;
 
     const difference = angularDifference(smoothedHeading, QIBLA_BEARING);
     els.differenceValue.textContent = `${Math.round(difference)}°`;
