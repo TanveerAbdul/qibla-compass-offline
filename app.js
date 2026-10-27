@@ -11,8 +11,8 @@
     locationText: $("locationText"), accuracyText: $("accuracyText"),
     locationStatus: $("locationStatus"), permissionPanel: $("permissionPanel"),
     noticeTitle: $("noticeTitle"), noticeText: $("noticeText"), iosHelp: $("iosHelp"),
-    enableBtn: $("enableBtn"), compass: $("compass"), dial: $("dial"),
-    ticks: $("ticks"), pointer: $("qiblaPointer"), qiblaBearing: $("qiblaBearing"),
+    enableBtn: $("enableBtn"), compass: $("compass"), dial: $("compass-dial"),
+    ticks: $("ticks"), qiblaMarkerFixed: $("qiblaMarkerFixed"), guidanceArrow: $("guidance-arrow"), qiblaBearing: $("qiblaBearing"),
     qiblaCardinal: $("qiblaCardinal"), alignmentMessage: $("alignmentMessage"),
     headingValue: $("headingValue"), differenceValue: $("differenceValue"),
     sensorStatus: $("sensorStatus"), redetectBtn: $("redetectBtn"),
@@ -21,7 +21,7 @@
   };
 
   let locationData = null;
-  let qiblaAngle = null;
+  let QIBLA_BEARING = null;
   let smoothedHeading = null;
   let rawHeading = null;
   let orientationStarted = false;
@@ -72,13 +72,14 @@
 
   function renderLocation(data, cached = false) {
     locationData = data;
-    qiblaAngle = calculateQibla(data.latitude, data.longitude);
+    QIBLA_BEARING = calculateQibla(data.latitude, data.longitude);
     els.locationText.textContent = `${data.latitude.toFixed(5)}°, ${data.longitude.toFixed(5)}°`;
     const accuracy = Number.isFinite(data.accuracy) ? `Accuracy ±${Math.round(data.accuracy)} m` : "Saved location";
     els.accuracyText.textContent = cached ? `${accuracy} · saved for offline use` : accuracy;
     els.locationStatus.classList.add("active");
-    els.qiblaBearing.textContent = `${Math.round(qiblaAngle)}°`;
-    els.qiblaCardinal.textContent = cardinalDirection(qiblaAngle);
+    els.qiblaBearing.textContent = `${Math.round(QIBLA_BEARING)}°`;
+    els.qiblaCardinal.textContent = cardinalDirection(QIBLA_BEARING);
+    els.qiblaMarkerFixed.style.transform = `rotate(${QIBLA_BEARING}deg)`;
     els.sensorStatus.textContent = "Location ready · waiting for compass heading";
     updateReadout();
   }
@@ -186,7 +187,7 @@
     if (smoothedHeading === null) {
       els.headingValue.textContent = "—°";
       els.differenceValue.textContent = "—°";
-      if (qiblaAngle !== null) els.alignmentMessage.textContent = "Move your phone to activate the compass";
+      if (QIBLA_BEARING !== null) els.alignmentMessage.textContent = "Move your phone to activate the compass";
       return;
     }
     els.headingValue.textContent = `${Math.round(smoothedHeading)}°`;
@@ -194,15 +195,15 @@
     els.dial.style.transform = `rotate(${-smoothedHeading}deg)`;
     els.ticks.style.transform = `rotate(${-smoothedHeading}deg)`;
 
-    if (qiblaAngle === null) {
+    if (QIBLA_BEARING === null) {
       els.alignmentMessage.textContent = "Waiting for location to calculate Qibla";
       return;
     }
 
-    const difference = angularDifference(smoothedHeading, qiblaAngle);
+    const difference = angularDifference(smoothedHeading, QIBLA_BEARING);
     els.differenceValue.textContent = `${Math.round(difference)}°`;
-    // The Qibla pointer is relative to the phone: target bearing minus current heading.
-    els.pointer.style.transform = `rotate(${qiblaAngle - smoothedHeading}deg)`;
+    const relativeAngle = (QIBLA_BEARING - smoothedHeading + 360) % 360;
+    els.guidanceArrow.style.transform = `rotate(${relativeAngle}deg)`;
     const aligned = difference < 5;
     els.compass.classList.toggle("aligned", aligned);
     if (aligned) {

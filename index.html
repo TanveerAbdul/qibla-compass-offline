@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0a1929">
+  <meta name="theme-color" content="#ead7a9">
   <meta name="description" content="A private, offline Qibla compass. Direction is calculated on your device.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,21 +18,10 @@
     <header class="topbar">
       <div class="brand-mark" aria-hidden="true">☾</div>
       <div>
-        <p class="eyebrow">YOUR PERSONAL DIRECTION FINDER</p>
-        <h1>Qibla <span>Compass</span></h1>
+        <h1>Qibla</h1>
       </div>
       <button id="installBtn" class="install-btn" hidden aria-label="Install app">＋ Install</button>
     </header>
-
-    <section class="location-card" aria-label="Current location">
-      <div class="location-icon" aria-hidden="true">⌖</div>
-      <div class="location-copy">
-        <p class="eyebrow">YOUR LOCATION</p>
-        <p id="locationText" class="location-main">Finding your location…</p>
-        <p id="accuracyText" class="location-sub">Waiting for GPS permission</p>
-      </div>
-      <span id="locationStatus" class="status-dot" title="Location status"></span>
-    </section>
 
     <section id="permissionPanel" class="notice-panel" hidden aria-live="polite">
       <div class="notice-symbol">!</div>
@@ -51,7 +40,7 @@
           <div class="dial-ring ring-one"></div>
           <div class="dial-ring ring-two"></div>
           <div class="ticks" id="ticks" aria-hidden="true"></div>
-          <div id="dial" class="dial">
+          <div id="compass-dial" class="dial">
             <span class="direction north">N</span>
             <span class="direction east">E</span>
             <span class="direction south">S</span>
@@ -62,13 +51,13 @@
             <span class="intercardinal nw">NW</span>
           </div>
           <div class="center-cap"><span>✦</span></div>
-          <div id="qiblaPointer" class="qibla-pointer" aria-hidden="true">
+          <div id="qiblaMarkerFixed" class="qibla-marker-fixed" aria-hidden="true"></div>
+          <div id="guidance-arrow" class="qibla-pointer" aria-hidden="true">
             <div class="pointer-shaft"></div>
             <div class="pointer-head"></div>
-            <div class="kaaba">🕋</div>
           </div>
-          <div class="north-marker" aria-hidden="true"></div>
         </div>
+        <div class="kaaba" aria-hidden="true">🕋</div>
       </div>
 
       <div class="direction-readout">
@@ -76,6 +65,16 @@
         <div class="bearing-line"><strong id="qiblaBearing">—°</strong><span id="qiblaCardinal">Calculating…</span></div>
         <p id="alignmentMessage" class="alignment-message">Finding your direction to the Kaaba</p>
       </div>
+
+      <section class="location-card" aria-label="Current location">
+        <div class="location-icon" aria-hidden="true">⌖</div>
+        <div class="location-copy">
+          <p class="eyebrow">YOUR LOCATION</p>
+          <p id="locationText" class="location-main">Finding your location…</p>
+          <p id="accuracyText" class="location-sub">Waiting for GPS permission</p>
+        </div>
+        <span id="locationStatus" class="status-dot" title="Location status"></span>
+      </section>
 
       <div class="readings">
         <div class="reading">
